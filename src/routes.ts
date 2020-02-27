@@ -17,6 +17,14 @@ routes.post('/login', celebrate({
   }
 }), AuthController.login)
 
+routes.post('/signup', celebrate({
+  body: {
+    name: Joi.string().required(),
+    email: Joi.string().required(),
+    password: Joi.string().required()
+  }
+}), AuthController.signup)
+
 routes.get('/api/users', UsersController.index)
 routes.post('/api/users', UsersController.store)
 

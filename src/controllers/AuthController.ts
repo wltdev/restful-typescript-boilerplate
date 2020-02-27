@@ -38,6 +38,27 @@ class AuthController {
   }
 
   /**
+   * User signup
+   * @param req
+   */
+  public async signup( req: Request, res: Response ): Promise<Response> {
+    const { body } = req
+
+    try {
+      const user = await User.create(body)
+
+      const token = jwt.sign({ id: user._id }, appConfig.secrets.jwt, {
+        expiresIn: appConfig.secrets.jwtExp
+      })
+
+      return res.status(200).json({ token })
+      
+    } catch (e) {
+      return res.status(2400).json({ error: e.message })
+    }
+  }
+
+  /**
    * Make a token to user authentication
    */
  private newToken(user_id: string): string {
