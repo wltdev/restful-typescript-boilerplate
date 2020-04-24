@@ -5,11 +5,11 @@ interface UserInterface extends Document {
   _id: string
   email: string
   name: string
-  admin: boolean
+  peladas: any
   comparePassword(candidatePassword: string): boolean
 }
 
-const schema = new Schema({
+const schema = new Schema({  
   email: {
     type: String,
     required: [true, 'E-mail é obrigatório!'],
@@ -20,10 +20,9 @@ const schema = new Schema({
     type: String,
     required: [true, 'Nome é obrigatório!']
   },
-  admin: {
-    type: Boolean,
-    default: false
-  },
+  position: {
+    type: String
+  },  
   password: {
     type: String,
     required: true,

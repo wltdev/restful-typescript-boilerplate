@@ -22,7 +22,8 @@ const schema = new Schema({
     key: String,
     url: String
   },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+  users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
+  peladeiros: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
 }, {
   timestamps: true
 })

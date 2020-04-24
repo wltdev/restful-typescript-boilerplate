@@ -18,7 +18,7 @@ class PeladasController {
    * @param res 
    */
   public async index (req: Request, res: Response): Promise<Response> {    
-    const docs = await Pelada.find()
+    const docs = await Pelada.find().populate({ path: 'users', model: User }).exec()
     return res.json(docs)
   }
 
@@ -29,28 +29,28 @@ class PeladasController {
    */
   public async store (req: MulterRequest, res: Response): Promise<Response> {
     try {
-      const { originalname, size, key, location: url = '' } = req.file
+      
       const { name, local, hour } = req.body
       
       const data = {
         name,
         local,
         hour,
-        image: {
+        users: req.user._id
+      }
+
+      if (req.file) {
+        const { originalname, size, key, location: url = '' } = req.file
+        const image = {
           name: originalname,
           size,
           key,
           url
-        },
-        user: req.user._id
+        }
+        data['image'] = image
       }
 
       const doc = await Pelada.create(data)
-
-      await User.findByIdAndUpdate(
-        { _id: req.user._id},
-        { admin: true }
-      )
 
       return res.json({ message: messages.success.new_record, data: doc })      
     } catch (error) {
