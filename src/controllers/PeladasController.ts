@@ -17,7 +17,7 @@ class PeladasController {
    * @param req 
    * @param res 
    */
-  public async index (req: Request, res: Response): Promise<Response> {    
+  public async index (req: Request, res: Response): Promise<Response> {
     const docs = await Pelada.find().populate({ path: 'users', model: User }).exec()
     return res.json(docs)
   }
