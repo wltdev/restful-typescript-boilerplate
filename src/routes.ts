@@ -10,6 +10,10 @@ import PeladasController from './controllers/PeladasController'
 
 const routes = Router()
 
+routes.get('/', (req, res) => {
+  return res.json({ hello: 'World' })
+})
+
 routes.post('/login', celebrate({
   body: {
       email: Joi.string().required(),
