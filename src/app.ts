@@ -1,14 +1,14 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
-import mongoose from 'mongoose'
 import { json, urlencoded } from 'body-parser'
 import morgan from 'morgan'
 import path from 'path'
 
 import routes from './routes'
-import appConfig from './config'
+// import appConfig from './config'
 import { protect } from '../src/middlewares/authMiddleware'
+import { sequelize } from './config'
 
 class App {
   public express: express.Application
@@ -35,11 +35,19 @@ class App {
   }
 
   private database (): void {
-    mongoose.connect(appConfig.dbUrl, {
-      useCreateIndex: true,
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    })
+    // mongoose.connect(appConfig.dbUrl, {
+    //   useCreateIndex: true,
+    //   useNewUrlParser: true,
+    //   useUnifiedTopology: true
+    // })
+    sequelize
+      .authenticate()
+      .then(() => {
+        console.log('DB IS CONNECTED')
+      })
+      .catch((e: any) => {
+        console.log(e.message)
+      })
   }
 
   private routes (): void {    

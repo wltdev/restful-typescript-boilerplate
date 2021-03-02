@@ -13,4 +13,5 @@ module.exports = {
 		timestamps: true,
 		underscored: true
   },
+  models: [__dirname + '/models']
 };

@@ -1,18 +1,20 @@
-import dotenv from 'dotenv'
+import * as dotenv from 'dotenv'
+import { Sequelize } from 'sequelize-typescript'
 
+const dbConfig = require('./database')
+ 
 dotenv.config({
   path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
 })
 
 const env = process.env
 
-const appConfig = {
+export const appConfig = {
   port: env.APP_PORT,
-  dbUrl: `mongodb://${env.DB_HOST}:${env.DB_PORT}/${env.DB_DATABASE}`,
   secrets: {
     jwt: env.JWT_SECRET,
     jwtExp: '100d'
   }
 }
 
-export default appConfig
+export const sequelize = new Sequelize(dbConfig)
