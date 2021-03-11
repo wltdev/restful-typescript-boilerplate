@@ -1,42 +1,47 @@
 import {
-  AllowNull,
-  AutoIncrement,
-  Column,
+  DataTypes,
   Model,
-  NotEmpty,
-  PrimaryKey,
-  Table
-} from 'sequelize-typescript'
+  Sequelize,
+  BuildOptions
+} from 'sequelize'
 
-export interface UserI {
-  id?: number | string | null
+class User extends Model {
+  readonly id: string
   name: string
   email: string
   password: string
+  created_at: Date
+  updated_at: Date
 }
 
-@Table({
-  tableName: 'users',
-  timestamps: true
-})
-export class User extends Model implements UserI {
-  @AutoIncrement
-  @PrimaryKey
-  @Column
-  id?:string
+type UserStatic = typeof Model & {
+  new (value?: Partial<User>, options?: BuildOptions): User
+}
 
-  @AllowNull(false)
-  @NotEmpty
-  @Column
-  name!: string
+export function build (sequelize: Sequelize) {
+  const User = sequelize.define('users', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
+  }, {
+    timestamps: true
+  }) as UserStatic
 
-  @AllowNull(false)
-  @NotEmpty
-  @Column
-  email!: string
-
-  @AllowNull(false)
-  @NotEmpty
-  @Column
-  password!: string
+  return User
 }

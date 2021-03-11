@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv'
-import { Sequelize } from 'sequelize-typescript'
+import { Sequelize } from 'sequelize'
 
 const dbConfig = require('./database')
  

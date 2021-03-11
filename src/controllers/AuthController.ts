@@ -1,10 +1,9 @@
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import mongoose from 'mongoose'
 
-import User from '../schemas/User'
+import User from '../models/users.model'
 import Pelada from '../schemas/Pelada'
-import appConfig from '../config'
+import { appConfig } from '../config'
 
 class AuthController {
   public async login(req: Request, res: Response): Promise<Response> {
@@ -15,7 +14,7 @@ class AuthController {
     }
 
     try {
-      const user = await User.findOne({ email }).select('name email position').exec()
+      const user = null // await User.findOne({ email }).select('name email position').exec()
 
       if (!user) {
         return res.status(401).json({ message: 'User not found' })
@@ -47,18 +46,20 @@ class AuthController {
    */
   public async signup(req: Request, res: Response): Promise<Response> {
     const { body } = req
+    // return res.send({ body })
 
     try {
       const user = await User.create(body)
 
-      const token = jwt.sign({ id: user._id }, appConfig.secrets.jwt, {
+      const token = jwt.sign({ id: user.id }, appConfig.secrets.jwt, {
         expiresIn: appConfig.secrets.jwtExp
       })
 
       return res.status(200).json({ token })
 
     } catch (e) {
-      return res.status(2400).json({ error: e.message })
+      console.log(e)
+      return res.status(500).json({ error: e.message })
     }
   }
 

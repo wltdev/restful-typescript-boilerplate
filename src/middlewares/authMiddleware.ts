@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
-import appConfig from '../config'
-import User from '../schemas/User'
+import { appConfig } from '../config'
+import User from '../models/users.model'
 
 export const protect = async (req, res, next) => {
   const bearer = req.headers.authorization
@@ -18,11 +18,7 @@ export const protect = async (req, res, next) => {
     return res.status(401).json({ message: 'Unauthorized', status: 401 })
   }
 
-  const user = await User.findById(payload.id)
-    .select('-password')
-    .populate('peladas')
-    .lean()
-    .exec()
+  const user = await User.findByPk(payload.id)
 
   if (!user) {
     return res.status(401).json({ message: 'Unauthorized', status: 401 })
