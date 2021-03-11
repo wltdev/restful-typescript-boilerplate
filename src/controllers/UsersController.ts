@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 // import bcrypt from 'bcrypt'
 
-import User from '../models/users.model'
+import User from '../models/user.model'
 
 class UsersController {
   public async index (req: Request, res: Response): Promise<Response> {

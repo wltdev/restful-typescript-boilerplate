@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import { appConfig } from '../config'
-import User from '../models/users.model'
+import User from '../models/user.model'
 
 export const protect = async (req, res, next) => {
   const bearer = req.headers.authorization

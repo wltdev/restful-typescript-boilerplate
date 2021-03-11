@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
-import User from '../models/users.model'
-import Pelada from '../schemas/Pelada'
+import User from '../models/user.model'
 import { appConfig } from '../config'
 
 class AuthController {
