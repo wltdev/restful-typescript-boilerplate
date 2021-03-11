@@ -1,4 +1,5 @@
 import { Model, DataTypes, Sequelize, Optional } from 'sequelize'
+import bcrypt from 'bcrypt'
 
 import { sequelize } from '../config'
 
@@ -6,6 +7,7 @@ interface UserAttributes {
   id: string
   name: string
   email: string
+  password: string
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
@@ -14,10 +16,12 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public id!: string
   public name!: string
   public email!: string
+  password!: string
 
   // timestamps!
-  public readonly created_at!: Date
-  public readonly updated_at!: Date
+  public readonly createdAt!: Date
+  public readonly updatedAt!: Date
+  validPassword: (candidatePassword: string) => Promise<boolean>
 }
 
 User.init({
@@ -35,10 +39,39 @@ User.init({
 		type: DataTypes.STRING,
 		allowNull: false,
 		unique: true
+	},
+	password: {
+		type: DataTypes.STRING,
+		allowNull: false
 	}
 }, {
 	tableName: 'users',
-	sequelize
+	sequelize,
+  defaultScope: {
+    attributes: { exclude: ['password'] }
+  },
+  scopes: {
+    withPassword: {
+      attributes: { include: ['password'] }
+    }
+  }
 })
+
+User.addHook('beforeCreate', async (fields: any) => {  
+	fields.password = await bcrypt.hash(fields.password, 8)
+})
+
+User.prototype.validPassword = function(candidatePassword: string) {
+  const passwordHash = this.password
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(candidatePassword, passwordHash, (err: any, same: boolean) => {
+      if (err) {
+        return reject(err)
+      }
+
+      resolve(same)
+    })
+  })
+}
 
 export default User

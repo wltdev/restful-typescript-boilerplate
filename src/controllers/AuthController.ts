@@ -14,29 +14,29 @@ class AuthController {
     }
 
     try {
-      const user = null // await User.findOne({ email }).select('name email position').exec()
+      const user = await User.scope('withPassword').findOne({ where: { email } })
 
       if (!user) {
         return res.status(401).json({ message: 'User not found' })
       }
 
-      const validPassword = user.comparePassword(password)
+      const validPassword = await user.validPassword(password)
 
       if (!validPassword) {
         return res.status(401).json({ message: 'Invalid password' })
       }
 
-      const token = jwt.sign({ id: user._id }, appConfig.secrets.jwt, {
+      const token = jwt.sign({ id: user.id }, appConfig.secrets.jwt, {
         expiresIn: appConfig.secrets.jwtExp
       })
 
-      const peladasAdmin = await Pelada.find({ "users": user._id })
-      const peladasPlayer = await Pelada.find({ "peladeiros": user._id })
+      // const peladasAdmin = await Pelada.find({ "users": user.id })
+      // const peladasPlayer = await Pelada.find({ "peladeiros": user.id })
 
-      return res.status(200).json({ token, user, peladasAdmin, peladasPlayer })
+      return res.status(200).json({ token, user })
 
     } catch (e) {
-      return res.status(2400).json({ error: e.message })
+      return res.status(500).json({ error: e.message })
     }
   }
 
