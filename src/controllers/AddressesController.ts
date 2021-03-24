@@ -37,20 +37,6 @@ class AddressesController {
       res.status(500).json({ error: error.message })
     }
   }
-
-  // public async getUserForTesting (): Promise<any> {
-  //   let user = await User.findOne({ email: 'jest@testing.com' })
-    
-  //   if (!user) {      
-  //     user = await User.create({
-  //       name: 'jest testing',
-  //       email: 'jest@testing.com',
-  //       password: '123456'
-  //     })
-  //   }
-
-  //   return user
-  // }
 }
 
 export default new AddressesController()

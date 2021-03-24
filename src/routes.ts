@@ -6,7 +6,6 @@ import { multerConfig } from './utils/multer'
 import AuthController from './controllers/AuthController'
 import UsersController from './controllers/UsersController'
 import AddressesController from './controllers/AddressesController'
-// import PeladasController from './controllers/PeladasController'
 
 const router = Router()
 
@@ -34,10 +33,5 @@ router.post('/api/users', UsersController.store)
 
 router.post('/api/users/:user_id/address', AddressesController.store)
 router.get('/api/users/:user_id/address', AddressesController.index)
-
-//Pelada
-// router.get('/api/peladas', PeladasController.index)
-// router.post('/api/peladas', multer(multerConfig).single('file'), PeladasController.store)
-// router.put('/api/peladas/:id', multer(multerConfig).single('file'), PeladasController.update)
 
 export default router
