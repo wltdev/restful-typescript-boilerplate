@@ -5,7 +5,6 @@ import {
   Association,
   BelongsToGetAssociationMixin
 } from 'sequelize'
-import bcrypt from 'bcrypt'
 
 import { sequelize } from '../config'
 import User from './user.model'

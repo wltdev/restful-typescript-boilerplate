@@ -37,6 +37,7 @@
     "typescript": "^3.7.4"
   },
   "dependencies": {
+    "@zmotivat0r/o0": "^1.0.2",
     "aws-sdk": "^2.608.0",
     "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",

@@ -1,11 +1,18 @@
 # Rest Api with nodejs and typescript
 
-## Scripts
+## Start Project
 
-In project directory, you can run:
+### `yarn or npm install`
+To install dependencies.
 
-### `yarn test`
-Verify if everithing is ok.
+### `yarn sequelize db:migrate`
+Run migrations and creating tables.
+
+### `yarn sequelize migration:create --name=add-age-field-to-users`
+Creating new migration file.
+
+### `yarn dev`
+To start dev server.
 
 
 ## Basic Routes
@@ -22,9 +29,24 @@ Response
 {
   token: jwt 
 }
+
+```
+### `POST /signup`
+```
+POST /signup
+{
+  name,
+  email,
+  password
+}
+
+Response
+{
+  token: jwt 
+}
 ```
 
-## Routes /api need the Authorization header
+## Routes /api need Authorization header
 ```
 {
   "Authorization": "Bearer {token}"
@@ -33,22 +55,33 @@ Response
 
 ### Products
 ```
-GET /api/products
+GET /api/users
 ```
 ```
-POST /api/products
+POST /api/users/{UUID}/address
 {
-  "name": "Product name",
-  "price": 100 
+  "zipcode": "",
+	"street": "",
+	"number": ""
 }
 ```
 ```
-PUT /api/products/:id
+GET /api/users/{UUID}/address
 {
-  "name": "Product name to change",
-  "price": 200 
+  "id": "54d25a22-c15a-49e4-904e-0c7bb8a218ec",
+  "name": "User name",
+  "email": "user@email.com",
+  "createdAt": "2021-03-11T15:29:12.063Z",
+  "updatedAt": "2021-03-11T15:29:12.063Z",
+  "addresses": [
+    {
+      "id": "e0e644f8-deee-41ec-a0ee-a696a6938c58",
+      "user_id": "54d25a22-c15a-49e4-904e-0c7bb8a218ec",
+      "zipcode": "",
+      "street": "",
+      "number": "",
+      "createdAt": "",
+      "updatedAt": ""
+    }
+  ]
 }
-```
-```
-DELETE /api/products/:id
-```

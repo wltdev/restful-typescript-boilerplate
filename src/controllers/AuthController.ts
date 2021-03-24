@@ -3,9 +3,26 @@ import jwt from 'jsonwebtoken'
 
 import User from '../models/user.model'
 import { appConfig } from '../config'
+import UserService from '../services/UserService'
 
+
+/**
+ * @class
+ */
 class AuthController {
-  public async login(req: Request, res: Response): Promise<Response> {
+  public service: UserService
+
+  public constructor () {
+    this.service = new UserService()
+  }
+
+  /**
+   * Login
+   * @param req 
+   * @param res 
+   * @returns token
+   */
+  login = async (req: Request, res: Response) => {
     const { email, password } = req.body
 
     if (!email || !password) {
@@ -13,9 +30,9 @@ class AuthController {
     }
 
     try {
-      const user = await User.scope('withPassword').findOne({ where: { email } })
+      const user = await this.service.findByEmail(email)
 
-      if (!user) {
+      if (!user || user.errors) {
         return res.status(401).json({ message: 'User not found' })
       }
 
@@ -29,9 +46,6 @@ class AuthController {
         expiresIn: appConfig.secrets.jwtExp
       })
 
-      // const peladasAdmin = await Pelada.find({ "users": user.id })
-      // const peladasPlayer = await Pelada.find({ "peladeiros": user.id })
-
       return res.status(200).json({ token, user })
 
     } catch (e) {
@@ -40,35 +54,30 @@ class AuthController {
   }
 
   /**
-   * User signup
-   * @param req
+   * Register account
+   * @param req 
+   * @param res 
+   * @returns token
    */
-  public async signup(req: Request, res: Response): Promise<Response> {
+  signup = async (req: Request, res: Response) => {
     const { body } = req
-    // return res.send({ body })
-
     try {
-      const user = await User.create(body)
+      const user = await this.service.create(body)
+
+      if (user.errors) {
+        return res.status(500).json({ errors: user.errors })
+      }
 
       const token = jwt.sign({ id: user.id }, appConfig.secrets.jwt, {
         expiresIn: appConfig.secrets.jwtExp
       })
 
-      return res.status(200).json({ token })
+      res.status(200).json({ token })
 
     } catch (e) {
       console.log(e)
-      return res.status(500).json({ error: e.message })
+      res.status(500).json({ error: e.message })
     }
-  }
-
-  /**
-   * Make a token to user authentication
-   */
-  private newToken(user_id: string): string {
-    return jwt.sign({ id: user_id }, appConfig.secrets.jwt, {
-      expiresIn: appConfig.secrets.jwtExp
-    })
   }
 }
 
