@@ -31,7 +31,7 @@ POST /login
   password
 }
 
-Response
+#response
 {
   token: jwt 
 }
@@ -46,7 +46,7 @@ POST /signup
   password
 }
 
-Response
+#response
 {
   token: jwt 
 }
@@ -62,6 +62,8 @@ Response
 ### `User data`
 ```
 GET /api/me
+
+#response
 {
   "id": "853941e7-cff8-43ef-af7c-91fa388e4ddf",
   "name": "User fullname",
@@ -93,6 +95,11 @@ PUT /api/me
 ### User Address Example
 ```
 GET /api/users
+
+#response 
+{
+  users: []
+}
 ```
 ```
 POST /api/users/{UUID}/address
@@ -105,6 +112,8 @@ POST /api/users/{UUID}/address
 
 ```
 GET /api/users/{UUID}/address
+
+#response
 {
   "id": "54d25a22-c15a-49e4-904e-0c7bb8a218ec",
   "name": "User name",
