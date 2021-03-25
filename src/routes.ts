@@ -33,6 +33,4 @@ router.get('/api/users', UsersController.index)
 router.post('/api/users/:user_id/address', AddressesController.store)
 router.get('/api/users/:user_id/address', AddressesController.index)
 
-router.get('/api/address-user/:address_id', AddressesController.getUserByAddress)
-
 export default router

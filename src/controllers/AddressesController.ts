@@ -47,19 +47,10 @@ class AddressesController {
 
       const doc = await user.createAddress(body)
 
-      res.json(doc)
+      return res.json(doc)
     } catch (error) {
       res.status(500).json({ error: error.message })
     }
-  }
-
-  getUserByAddress = async (req: Request, res: Response): Promise<Response> => {
-    const address = await Address.findByPk(req.params.address_id, {
-      include: { association: 'user' }
-    })
-    const user = await address.getUser()
-    console.log(user)
-    return res.status(200).json({ address })
   }
 }
 

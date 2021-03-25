@@ -27,13 +27,6 @@ class Address extends Model<Attributes, CreationAttributes> implements Attribute
   public number!: string
   public readonly created_at!: Date
   public readonly updated_at!: Date
-
-  public getUser!: BelongsToGetAssociationMixin<User>
-  public readonly user?: User[]
-
-  public static associations: {
-    user: Association<Address, User>
-  }
 }
 
 Address.init({
@@ -63,12 +56,5 @@ Address.init({
 	tableName: 'addresses',
 	sequelize
 })
-
-// Address.belongsTo(User, {
-//   targetKey: "user_id",
-//   foreignKey: "user_id",
-//   as: "user", // this determines the name in `associations`!
-// });
-
 
 export default Address
