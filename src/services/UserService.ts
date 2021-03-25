@@ -10,6 +10,18 @@ interface UserI {
 }
 
 class UserService extends User {
+  public async findAll() {
+    const [ err, doc ] = <any> await oO(User.findAll({}))
+    if (err) {
+      const errors = await errorHandler(err.errors)
+      return {
+        errors
+      }
+    }
+
+    return doc
+  }
+
   public async create(params: UserI) {
     const [ err, doc ] = <any> await oO(User.create(params))
     if (err) {
@@ -24,7 +36,18 @@ class UserService extends User {
 
   public async findByEmail(email: string) {
     const [ err, doc ] = <any> await oO(User.scope('withPassword').findOne({ where: { email } }))
-    console.log({ err, doc })
+    if (err) {
+      const errors = await errorHandler(err.errors)
+      return {
+        errors
+      }
+    }
+
+    return doc
+  }
+
+  public async findByPk(user_id: string, params: object = {}) {
+    const [ err, doc ] = <any> await oO(User.scope('withPassword').findByPk(user_id, params))
     if (err) {
       const errors = await errorHandler(err.errors)
       return {

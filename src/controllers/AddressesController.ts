@@ -3,14 +3,31 @@ import { Request, Response } from 'express'
 
 import Address from '../models/address.model'
 import User from '../models/user.model'
+import UserService from '../services/UserService'
 
 class AddressesController {
-  public async index (req: Request, res: Response): Promise<Response> {
+  public userService: UserService
+
+  public constructor () {
+    this.userService = new UserService()
+  }
+
+  index = async (req: Request, res: Response): Promise<Response> => {
     const { user_id } = req.params
     try {
-      const doc = await User.findByPk(user_id, {
+      const doc = await this.userService.findByPk(user_id, {
         include: { association: 'addresses' }
       })
+
+      // # or with method inside User class
+
+      // const user = await this.userService.findByPk(user_id)
+      // const addresses = await user.getAddresses()
+      // return res.status(200).json({ addresses })
+
+      if (!doc || doc.errors) {
+        return res.status(401).json({ message: 'User not found' })
+      }
       
       return res.json(doc)      
     } catch (e) {
@@ -18,24 +35,31 @@ class AddressesController {
     }
   }
 
-  public async store (req: Request, res: Response): Promise<Response> {
+  store = async (req: Request, res: Response): Promise<Response> => {
     const { body } = req
     const { user_id } = req.params
     try {
-      const user = await User.findByPk(user_id)
-      if (!user) {
-        return res.status(404).json({ error: 'User not found'})
+      const user = await this.userService.findByPk(user_id)
+
+      if (!user || user.errors) {
+        return res.status(401).json({ message: 'User not found' })
       }
 
-      const doc = await Address.create({
-        ...body,
-        user_id
-      })
+      const doc = await user.createAddress(body)
 
       res.json(doc)
     } catch (error) {
       res.status(500).json({ error: error.message })
     }
+  }
+
+  getUserByAddress = async (req: Request, res: Response): Promise<Response> => {
+    const address = await Address.findByPk(req.params.address_id, {
+      include: { association: 'user' }
+    })
+    const user = await address.getUser()
+    console.log(user)
+    return res.status(200).json({ address })
   }
 }
 

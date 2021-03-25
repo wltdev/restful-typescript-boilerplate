@@ -1,7 +1,9 @@
 import { 
   Model, 
   DataTypes,
-  Optional
+  Optional,
+  HasManyCreateAssociationMixin,
+  HasManyGetAssociationsMixin
 } from 'sequelize'
 import bcrypt from 'bcrypt'
 
@@ -27,6 +29,9 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
   validPassword: (candidatePassword: string) => Promise<boolean>
+
+  public createAddress!: HasManyCreateAssociationMixin<Address>
+  public getAddress!: HasManyGetAssociationsMixin<Address>
 }
 
 User.init({

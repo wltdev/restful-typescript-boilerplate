@@ -64,4 +64,11 @@ Address.init({
 	sequelize
 })
 
+// Address.belongsTo(User, {
+//   targetKey: "user_id",
+//   foreignKey: "user_id",
+//   as: "user", // this determines the name in `associations`!
+// });
+
+
 export default Address

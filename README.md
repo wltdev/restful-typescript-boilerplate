@@ -1,19 +1,25 @@
-# Rest Api with nodejs and typescript
+# Rest Api with nodejs and typescript + postgresql
 
 ## Start Project
+```
+# To install dependencies
+yarn or npm install
 
-### `yarn or npm install`
-To install dependencies.
+# Run migrations and creating tables
+yarn sequelize db:migrate
 
-### `yarn sequelize db:migrate`
-Run migrations and creating tables.
+#To start dev server
+yarn dev
+```
 
-### `yarn sequelize migration:create --name=add-age-field-to-users`
-Creating new migration file.
+## Sequelize Database
+```
+# Creating new migration file
+yarn sequelize migration:create --name=add-age-field-to-users
 
-### `yarn dev`
-To start dev server.
-
+# Sequelize commands list
+yarn sequelize
+``` 
 
 ## Basic Routes
 
