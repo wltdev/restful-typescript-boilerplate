@@ -1,9 +1,12 @@
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
-import User from '../models/user.model'
 import { appConfig } from '../config'
 import UserService from '../services/UserService'
+
+interface IUserRequest extends Request {
+  user?: any
+}
 
 
 /**
@@ -73,6 +76,34 @@ class AuthController {
       })
 
       res.status(200).json({ token })
+
+    } catch (e) {
+      console.log(e)
+      res.status(500).json({ error: e.message })
+    }
+  }
+
+  /**
+   * Get user data
+   * @param req 
+   * @param res 
+   * @returns 
+   */
+  myInfo = async (req: IUserRequest, res: Response) => {
+    return res.json(req.user)
+  }
+
+  /**
+   * Update logged user data
+   * @param req 
+   * @param res 
+   */
+  updateMyInfo = async (req: IUserRequest, res: Response) => {
+    const { body } = req
+    try {
+      const user = await req.user.update(body)
+
+      res.status(200).json({ user })
 
     } catch (e) {
       console.log(e)

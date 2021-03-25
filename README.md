@@ -59,7 +59,38 @@ Response
 }
 ```
 
-### Products
+### `User data`
+```
+GET /api/me
+{
+  "id": "853941e7-cff8-43ef-af7c-91fa388e4ddf",
+  "name": "User fullname",
+  "email": "user@email.com",
+  "createdAt": "2021-03-24T19:31:12.844Z",
+  "updatedAt": "2021-03-25T18:06:59.164Z",
+  "addresses": [
+    {
+      "id": "241c0510-7f9c-4b7c-9873-e11b929e94b6",
+      "user_id": "853941e7-cff8-43ef-af7c-91fa388e4ddf",
+      "zipcode": "",
+      "street": "",
+      "number": "",
+      "createdAt": "2021-03-25T13:30:44.986Z",
+      "updatedAt": "2021-03-25T18:18:07.695Z"
+    }
+  ]
+}
+```
+
+### `Update user data`
+```
+PUT /api/me
+{
+	"name": "Editing name example"
+}
+```
+
+### User Address Example
 ```
 GET /api/users
 ```
@@ -71,6 +102,7 @@ POST /api/users/{UUID}/address
 	"number": ""
 }
 ```
+
 ```
 GET /api/users/{UUID}/address
 {

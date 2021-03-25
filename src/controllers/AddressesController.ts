@@ -12,7 +12,7 @@ class AddressesController {
     this.userService = new UserService()
   }
 
-  index = async (req: Request, res: Response): Promise<Response> => {
+  index = async (req: Request, res: Response) => {
     const { user_id } = req.params
     try {
       const doc = await this.userService.findByPk(user_id, {
@@ -35,7 +35,7 @@ class AddressesController {
     }
   }
 
-  store = async (req: Request, res: Response): Promise<Response> => {
+  store = async (req: Request, res: Response) => {
     const { body } = req
     const { user_id } = req.params
     try {
@@ -48,6 +48,27 @@ class AddressesController {
       const doc = await user.createAddress(body)
 
       return res.json(doc)
+    } catch (error) {
+      res.status(500).json({ error: error.message })
+    }
+  }
+
+  update = async (req: Request, res: Response) => {
+    const { address_id } = req.params
+    const { body } = req
+    try {
+      const doc = await Address.update(body, { where: { id: address_id }})
+      return res.status(200).json(doc)
+    } catch (error) {
+      res.status(500).json({ error: error.message })
+    }
+  }
+
+  remove = async (req: Request, res: Response) => {
+    const { address_id } = req.params
+    try {
+      const doc = await Address.destroy({ where: { id: address_id }})
+      return res.status(200).json(doc)
     } catch (error) {
       res.status(500).json({ error: error.message })
     }

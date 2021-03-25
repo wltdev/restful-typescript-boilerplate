@@ -18,7 +18,9 @@ export const protect = async (req, res, next) => {
     return res.status(401).json({ message: 'Unauthorized', status: 401 })
   }
 
-  const user = await User.findByPk(payload.id)
+  const user = await User.findByPk(payload.id, {
+    include: { association: 'addresses' }
+  })
 
   if (!user) {
     return res.status(401).json({ message: 'Unauthorized', status: 401 })
